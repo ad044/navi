@@ -1,11 +1,16 @@
 package navi.commandsystem.commands.general;
 
 import navi.commandsystem.Command;
+import navi.commandsystem.CommandParameters;
 import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.*;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+import static navi.roles.RoleManager.addRoles;
+import static navi.roles.RoleManager.removeRoles;
 
 public class ColorCommand implements Command {
     @Override
@@ -19,43 +24,38 @@ public class ColorCommand implements Command {
     }
 
     @Override
-    public final void execute(GuildMessageReceivedEvent event, String[] args) {
-        TextChannel channel = event.getChannel();
-        Guild guild = event.getGuild();
-        Member author = guild.getMember(event.getAuthor());
-        List<Member> mentions = event.getMessage().getMentionedMembers();
+    public final void execute(CommandParameters params) {
+        TextChannel channel = params.getTextChannel();
+        Guild guild = params.getGuild();
+        Member author = params.getAuthor();
+        List<Member> mentions = params.getMentions();
+        String[] args = params.getArgs();
 
-        if (args.length  < 2) {
+        if (args.length < 2) {
             channel.sendMessage("Please provide an input for the color.").queue();
             return;
         }
 
-        if (author == null) {
-            channel.sendMessage("Author is null.").queue();
-            return;
-        }
-
         String color = args[1];
+        List<Role> colorRoles = guild.getRoles().stream().filter(role -> role.getName()
+                .startsWith("-")).collect(Collectors.toList());
+        Optional<Role> targetRole = colorRoles.stream().filter(role -> role.getName().equals("-" + color)).findFirst();
 
-        Member targetMember = author.getPermissions(channel)
-                .contains(Permission.ADMINISTRATOR) && mentions.size() > 0 ? mentions.get(0) : event.getMember();
-
-        List<Role> roles = guild.getRolesByName("-" + color, true);
-
-        if (roles.size() == 0) {
-            channel.sendMessage("Couldn't find a role with this color. Ask an admen to add it.").queue();
-        } else {
-            if (targetMember == null) {
-                channel.sendMessage("Member is null.").queue();
-                return;
+        if (targetRole.isPresent()){
+            Role targetRoleFinal = targetRole.get();
+            if (mentions.size() > 0) {
+                if (author.hasPermission(Permission.ADMINISTRATOR)){
+                    removeRoles(mentions, colorRoles, guild);
+                    addRoles(mentions, targetRoleFinal, guild);
+                } else {
+                    channel.sendMessage("You do not have permission to change someone's color.").queue();
+                }
+            } else {
+                removeRoles(author, colorRoles, guild);
+                addRoles(author, targetRoleFinal, guild);
             }
-
-            guild.getRoles()
-                    .forEach(role -> {
-                        if (role.getName().charAt(0) == '-') {
-                            guild.removeRoleFromMember(targetMember, role).complete();
-                        }});
-            guild.addRoleToMember(targetMember, roles.get(0)).queue();
+        } else {
+            channel.sendMessage("Couldn't find a role with this color. Ask an admen to add it.").queue();
         }
     }
 }

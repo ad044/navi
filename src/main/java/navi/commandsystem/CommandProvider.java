@@ -3,6 +3,7 @@ package navi.commandsystem;
 import navi.commandsystem.commands.administration.BanCommand;
 import navi.commandsystem.commands.administration.DeleteCommand;
 import navi.commandsystem.commands.administration.KickCommand;
+import navi.commandsystem.commands.administration.MuteCommand;
 import navi.commandsystem.commands.general.ColorCommand;
 import navi.commandsystem.commands.general.HelpCommand;
 import navi.commandsystem.commands.misc.NeofetchCommand;
@@ -18,7 +19,8 @@ public final class CommandProvider {
             entry("color", new ColorCommand()),
             entry("delete", new DeleteCommand()),
             entry("ban", new BanCommand()),
-            entry("kick", new KickCommand())
+            entry("kick", new KickCommand()),
+            entry("mute", new MuteCommand())
     );
 
     public static boolean commandExists(String command) {

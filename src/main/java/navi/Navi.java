@@ -20,9 +20,9 @@ public class Navi extends ListenerAdapter {
 
     public static void main(String[] args) throws LoginException {
         jda = JDABuilder.createDefault(TOKEN)
-                        .enableIntents(GatewayIntent.GUILD_MEMBERS)
-                        .setMemberCachePolicy(MemberCachePolicy.ALL)
-                        .build();
+                    .enableIntents(GatewayIntent.GUILD_MEMBERS)
+                    .setMemberCachePolicy(MemberCachePolicy.ALL)
+                    .build();
 
         jda.addEventListener(new EventListener());
     }

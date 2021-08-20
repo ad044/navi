@@ -1,6 +1,7 @@
 package navi.commandsystem.commands.general;
 
 import navi.commandsystem.Command;
+import navi.commandsystem.CommandParameters;
 import navi.commandsystem.CommandProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
@@ -32,8 +33,8 @@ public final class HelpCommand implements Command {
     }
 
     @Override
-    public final void execute(GuildMessageReceivedEvent event, String[] args) {
-        event.getChannel().sendMessageEmbeds(constructHelpMessage()).queue();
+    public final void execute(CommandParameters params) {
+        params.getTextChannel().sendMessageEmbeds(constructHelpMessage()).queue();
 //        event.getAuthor().openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructHelpMessage())).queue();
     }
 }

@@ -1,7 +1,7 @@
 package navi.commandsystem.commands.misc;
 
 import navi.commandsystem.Command;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import navi.commandsystem.CommandParameters;
 
 public final class NeofetchCommand implements Command {
     @Override
@@ -15,8 +15,8 @@ public final class NeofetchCommand implements Command {
     }
 
     @Override
-    public final void execute(GuildMessageReceivedEvent event, String[] args) {
-        event.getChannel().sendMessage(
+    public final void execute(CommandParameters params) {
+        params.getTextChannel().sendMessage(
         "```fix\n                  .+/\n" +
                 "                  sNm-\n" +
                 "               .-/+so+:.'\n" +

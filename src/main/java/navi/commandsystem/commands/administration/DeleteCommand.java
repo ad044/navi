@@ -1,15 +1,15 @@
 package navi.commandsystem.commands.administration;
 
 import navi.commandsystem.Command;
+import navi.commandsystem.CommandParameters;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class DeleteCommand implements Command {
+public final class DeleteCommand implements Command {
     @Override
     public final String getDescription() {
         return "Deletes messages.";
@@ -21,14 +21,14 @@ public class DeleteCommand implements Command {
     }
 
 
-    public final void deleteMessages(int count, TextChannel channel, List<Member> mentions) {
+    public final void deleteMessages(int count, TextChannel channel, List<Member> mentions, boolean hasMentions) {
         int deletedCount = 0;
 
         while (deletedCount != count) {
             int currCount = Math.min(count - deletedCount, 100);
 
             List<Message> messages = channel.getHistory().retrievePast(currCount).complete();
-            if (mentions.size() > 0) {
+            if (hasMentions) {
                 messages = messages
                         .stream()
                         .filter(message -> mentions.contains(message.getMember()))
@@ -43,19 +43,21 @@ public class DeleteCommand implements Command {
 
             // For some reason deleteMessages can't operate on a collection of size 1
             if (currSize < 2) {
-                messages.forEach(message -> message.delete().complete());
+                messages.forEach(message -> message.delete().queue());
                 return;
             }
 
-            channel.deleteMessages(messages).complete();
+            channel.deleteMessages(messages).queue();
             deletedCount += messages.size();
         }
     }
 
     @Override
-    public final void execute(GuildMessageReceivedEvent event, String[] args) {
-        TextChannel channel = event.getChannel();
-        List<Member> mentions = event.getMessage().getMentionedMembers();
+    public final void execute(CommandParameters params) {
+        TextChannel channel = params.getTextChannel();
+        List<Member> mentions = params.getMentions();
+        boolean hasMentions = params.hasMentions();
+        String[] args = params.getArgs();
 
         if (args.length < 2) {
             channel.sendMessage("Please provide arguments for the command.").queue();
@@ -69,7 +71,7 @@ public class DeleteCommand implements Command {
                 return;
             }
 
-            deleteMessages(count, channel, mentions);
+            deleteMessages(count, channel, mentions, hasMentions);
 
         } catch (NumberFormatException e) {
             channel.sendMessage("The first argument must be a number.").queue();
