@@ -38,7 +38,7 @@ public final class EventHandler {
         // Check if a command call
         if (message.startsWith(Navi.prefix)) {
             String[] cmdSplit = message.split(" ");
-            if (cmdSplit.length > 2) {
+            if (cmdSplit.length > 1) {
                 handleCommandReceivedEvent(event, Arrays.copyOfRange(cmdSplit, 1, cmdSplit.length));
             }
         }
