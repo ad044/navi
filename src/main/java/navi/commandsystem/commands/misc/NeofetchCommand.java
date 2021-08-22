@@ -4,7 +4,7 @@ import navi.Navi;
 import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
 
-import java.text.MessageFormat;
+import java.util.concurrent.TimeUnit;
 
 public final class NeofetchCommand implements Command {
     @Override
@@ -29,7 +29,7 @@ public final class NeofetchCommand implements Command {
         return getRandomInRange(1087423, 3440);
     }
 
-    static class DiskUsage {
+    private static class DiskUsage {
         private final double gbUsed;
         private final double percentageUsed;
 
@@ -55,9 +55,18 @@ public final class NeofetchCommand implements Command {
         return new DiskUsage(348.26, 347.1, 1000);
     }
 
+    private static String getUptimeFormatted(long millis) {
+        return String.format("%02d:%02d:%02d",
+                TimeUnit.MILLISECONDS.toHours(millis),
+                TimeUnit.MILLISECONDS.toMinutes(millis) -
+                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
+                TimeUnit.MILLISECONDS.toSeconds(millis) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
+    }
+
     @Override
     public final void execute(CommandParameters params) {
-        String uptime = Navi.getUptimeFormatted();
+        String uptime = getUptimeFormatted(Navi.getUptime());
         int ramUsage = getRamUsage();
         DiskUsage adam = getAdamDiskUsage();
         DiskUsage lilith = getLilithDiskUsage();

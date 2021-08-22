@@ -11,7 +11,6 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import javax.security.auth.login.LoginException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.util.concurrent.TimeUnit;
 
 public class Navi extends ListenerAdapter {
     public static JDA jda;
@@ -21,16 +20,6 @@ public class Navi extends ListenerAdapter {
     public static final Dotenv dotenv = Dotenv.load();
     public static final String TOKEN = dotenv.get("TOKEN");
     public static final String DEFAULT_CHANNEL = dotenv.get("DEFAULT_CHANNEL");
-
-    public static String getUptimeFormatted() {
-        long millis = mxBean.getUptime();
-        return String.format("%02d:%02d:%02d",
-                TimeUnit.MILLISECONDS.toHours(millis),
-                TimeUnit.MILLISECONDS.toMinutes(millis) -
-                        TimeUnit.HOURS.toMinutes(TimeUnit.MILLISECONDS.toHours(millis)),
-                TimeUnit.MILLISECONDS.toSeconds(millis) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(millis)));
-    }
 
     public static long getUptime() {
         return mxBean.getUptime();
