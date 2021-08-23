@@ -39,6 +39,7 @@ public final class EventHandler {
         for (String word : Navi.filteredWords) {
             if (message.contains(word)) {
                 event.getMessage().delete().queue();
+                return;
             }
         }
 
