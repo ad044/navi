@@ -14,6 +14,7 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public final class AudioPlayer {
     private final AudioPlayerManager playerManager;
@@ -42,7 +43,7 @@ public final class AudioPlayer {
     }
 
 
-    public void loadAndPlay(final TextChannel channel, final String trackUrl) {
+    public void loadAndPlay(final TextChannel channel, VoiceChannel voiceChannel, final String trackUrl) {
         GuildMusicManager musicManager = getGuildAudioPlayer(channel.getGuild());
 
         playerManager.loadItemOrdered(musicManager, trackUrl, new AudioLoadResultHandler() {
@@ -50,7 +51,7 @@ public final class AudioPlayer {
             public void trackLoaded(AudioTrack track) {
                 channel.sendMessage("Adding to queue " + track.getInfo().title).queue();
 
-                play(channel.getGuild(), track);
+                play(channel.getGuild(), voiceChannel, track);
             }
 
             @Override
@@ -66,7 +67,7 @@ public final class AudioPlayer {
                         " (first track of playlist " + playlist.getName() + ")")
                         .queue();
 
-                play(channel.getGuild(), firstTrack);
+                play(channel.getGuild(), voiceChannel, firstTrack);
             }
 
             @Override
@@ -81,9 +82,14 @@ public final class AudioPlayer {
         });
     }
 
-    private void play(Guild guild, AudioTrack track) {
+    private void play(Guild guild, VoiceChannel voiceChannel, AudioTrack track) {
         GuildMusicManager musicManager = getGuildAudioPlayer(guild);
-        connectToFirstVoiceChannel(guild.getAudioManager());
+        AudioManager audioManager = guild.getAudioManager();
+        if (voiceChannel != null) {
+            audioManager.openAudioConnection(voiceChannel);
+        } else {
+            connectToFirstVoiceChannel(audioManager);
+        }
 
         musicManager.scheduler.queue(track);
     }
@@ -102,6 +108,11 @@ public final class AudioPlayer {
         }
 
         channel.sendMessage("Paused the player.").queue();
+    }
+
+    public void movePlayer(Guild guild, VoiceChannel voiceChannel){
+        AudioManager audioManager = guild.getAudioManager();
+        audioManager.openAudioConnection(voiceChannel);
     }
 
     public void continueTrack(Guild guild, TextChannel channel) {

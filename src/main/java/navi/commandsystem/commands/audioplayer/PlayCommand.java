@@ -4,9 +4,11 @@ import navi.Navi;
 import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
 import net.dv8tion.jda.api.entities.TextChannel;
+import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 
 public final class PlayCommand implements Command {
     @Override
@@ -59,6 +61,7 @@ public final class PlayCommand implements Command {
     public void execute(CommandParameters params) {
         String[] args = params.getArgs();
         TextChannel channel = params.getTextChannel();
+        VoiceChannel voiceChannel = params.getAuthor().getVoiceState().getChannel();
 
         if (args.length == 0) {
             channel.sendMessage("Insufficient arguments.").queue();
@@ -72,6 +75,6 @@ public final class PlayCommand implements Command {
             return;
         }
 
-        Navi.audioPlayer.loadAndPlay(params.getTextChannel(), String.join(" ", query));
+        Navi.audioPlayer.loadAndPlay(params.getTextChannel(), voiceChannel, String.join(" ", query));
     }
 }
