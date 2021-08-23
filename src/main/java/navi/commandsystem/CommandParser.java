@@ -23,6 +23,6 @@ public final class CommandParser {
                 .filter(arg -> !mentionsAsMemberIds.contains(arg))
                 .toArray(String[]::new) ;
 
-        return new CommandParameters(guild, channel, author, mentions, args);
+        return new CommandParameters(guild, message, channel, author, mentions, args);
     }
 }

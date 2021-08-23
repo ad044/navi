@@ -6,6 +6,7 @@ import navi.commandsystem.commands.administration.KickCommand;
 import navi.commandsystem.commands.administration.MuteCommand;
 import navi.commandsystem.commands.audioplayer.*;
 import navi.commandsystem.commands.general.*;
+import navi.commandsystem.commands.misc.AdifyCommand;
 import navi.commandsystem.commands.misc.NeofetchCommand;
 
 import java.util.Map;
@@ -25,7 +26,10 @@ public final class CommandProvider {
             entry("skip", new SkipCommand()),
             entry("pause", new PauseCommand()),
             entry("continue", new ContinueCommand()),
-            entry("move", new MoveCommand()));
+            entry("move", new MoveCommand()),
+            entry("adify", new AdifyCommand()),
+            entry("remind", new RemindCommand())
+    );
 
     public static boolean commandExists(String command) {
         return commands.containsKey(command);

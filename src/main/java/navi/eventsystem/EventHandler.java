@@ -35,6 +35,13 @@ public final class EventHandler {
     public static void handleMessageReceivedEvent(GuildMessageReceivedEvent event){
         String message = event.getMessage().getContentRaw();
 
+
+        for (String word : Navi.filteredWords) {
+            if (message.contains(word)) {
+                event.getMessage().delete().queue();
+            }
+        }
+
         // Check if a command call
         if (message.startsWith(Navi.prefix)) {
             String[] cmdSplit = message.trim().replaceAll(" +", " ").split(" ");

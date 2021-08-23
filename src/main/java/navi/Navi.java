@@ -25,6 +25,9 @@ public class Navi extends ListenerAdapter {
     public static final String TOKEN = dotenv.get("TOKEN");
     public static final String DEFAULT_CHANNEL = dotenv.get("DEFAULT_CHANNEL");
 
+    public static final String[] filteredWords = new String[]
+            {};
+
     public static long getUptime() {
         return mxBean.getUptime();
     }
