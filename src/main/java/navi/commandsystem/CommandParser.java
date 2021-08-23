@@ -19,7 +19,9 @@ public final class CommandParser {
         // Parse command arguments
         List<String> mentionsAsMemberIds = mentions.stream().map(member -> "<@!" + member.getId() + ">")
                 .collect(Collectors.toList());
-        String[] args = Arrays.stream(commandMsg).filter(arg -> !mentionsAsMemberIds.contains(arg)).toArray(String[]::new);
+        String[] args = Arrays.stream(Arrays.copyOfRange(commandMsg, 1, commandMsg.length))
+                .filter(arg -> !mentionsAsMemberIds.contains(arg))
+                .toArray(String[]::new) ;
 
         return new CommandParameters(guild, channel, author, mentions, args);
     }

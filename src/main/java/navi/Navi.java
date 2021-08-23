@@ -1,9 +1,11 @@
 package navi;
 
 import io.github.cdimascio.dotenv.Dotenv;
+import navi.audioplayer.AudioPlayer;
 import navi.eventsystem.EventListener;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.hooks.ListenerAdapter;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.MemberCachePolicy;
@@ -14,6 +16,8 @@ import java.lang.management.RuntimeMXBean;
 
 public class Navi extends ListenerAdapter {
     public static JDA jda;
+    public static AudioPlayer audioPlayer;
+    public static Guild guild;
 
     public static RuntimeMXBean mxBean;
     public static final String prefix = "navi,";
@@ -27,11 +31,14 @@ public class Navi extends ListenerAdapter {
 
     public static void main(String[] args) throws LoginException {
         mxBean = ManagementFactory.getRuntimeMXBean();
+
         jda = JDABuilder.createDefault(TOKEN)
                     .enableIntents(GatewayIntent.GUILD_MEMBERS)
                     .setMemberCachePolicy(MemberCachePolicy.ALL)
                     .build();
 
         jda.addEventListener(new EventListener());
+
+        audioPlayer = new AudioPlayer();
     }
 }

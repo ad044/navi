@@ -16,7 +16,7 @@ public final class KickCommand implements Command {
 
     @Override
     public final void execute(CommandParameters params) {
-        if (params.getArgs().length < 2) {
+        if (params.getMentions().size() == 0) {
             params.getTextChannel().sendMessage("Please provide a user (or users) to kick.").queue();
         }
 

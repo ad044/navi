@@ -27,15 +27,15 @@ public final class BanCommand implements Command {
         TextChannel channel = params.getTextChannel();
         List<Member> mentions = params.getMentions();
 
-        if (args.length < 2) {
+        if (mentions.size() == 0) {
             channel.sendMessage("Please provide a user (or users) to ban.").queue();
         }
 
         mentions.forEach(member -> member.ban(10).queue());
 
         // If time was passed (after which to unban the member(s))
-        if (args.length >= 1) {
-            String scheduleData = args[1];
+        if (args.length > 0) {
+            String scheduleData = args[0];
             Runnable scheduledCmd = () -> mentions.forEach(member -> guild.unban(member.getId()).queue());
             CommandScheduler.scheduleCommand(scheduledCmd, scheduleData, channel);
         }

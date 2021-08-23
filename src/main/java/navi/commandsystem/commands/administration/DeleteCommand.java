@@ -59,12 +59,12 @@ public final class DeleteCommand implements Command {
         boolean hasMentions = params.hasMentions();
         String[] args = params.getArgs();
 
-        if (args.length < 2) {
+        if (args.length == 0) {
             channel.sendMessage("Please provide arguments for the command.").queue();
         }
 
         try {
-            int count = Integer.parseInt(args[1]);
+            int count = Integer.parseInt(args[0]);
 
             if (count < 1) {
                 channel.sendMessage("X?D?D?").queue();

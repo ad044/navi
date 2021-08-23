@@ -4,8 +4,11 @@ import navi.commandsystem.commands.administration.BanCommand;
 import navi.commandsystem.commands.administration.DeleteCommand;
 import navi.commandsystem.commands.administration.KickCommand;
 import navi.commandsystem.commands.administration.MuteCommand;
-import navi.commandsystem.commands.general.ColorCommand;
-import navi.commandsystem.commands.general.HelpCommand;
+import navi.commandsystem.commands.audioplayer.ContinueCommand;
+import navi.commandsystem.commands.audioplayer.PauseCommand;
+import navi.commandsystem.commands.audioplayer.PlayCommand;
+import navi.commandsystem.commands.audioplayer.SkipCommand;
+import navi.commandsystem.commands.general.*;
 import navi.commandsystem.commands.misc.NeofetchCommand;
 
 import java.util.Map;
@@ -20,8 +23,12 @@ public final class CommandProvider {
             entry("delete", new DeleteCommand()),
             entry("ban", new BanCommand()),
             entry("kick", new KickCommand()),
-            entry("mute", new MuteCommand())
-    );
+            entry("mute", new MuteCommand()),
+            entry("play", new PlayCommand()),
+            entry("skip", new SkipCommand()),
+            entry("pause", new PauseCommand()),
+            entry("continue", new ContinueCommand())
+            );
 
     public static boolean commandExists(String command) {
         return commands.containsKey(command);
