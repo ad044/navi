@@ -8,6 +8,7 @@ import navi.commandsystem.commands.audioplayer.*;
 import navi.commandsystem.commands.general.*;
 import navi.commandsystem.commands.misc.AdifyCommand;
 import navi.commandsystem.commands.misc.NeofetchCommand;
+import navi.commandsystem.commands.misc.UwuifyCommand;
 
 import java.util.Map;
 
@@ -28,7 +29,8 @@ public final class CommandProvider {
             entry("continue", new ContinueCommand()),
             entry("move", new MoveCommand()),
             entry("adify", new AdifyCommand()),
-            entry("remind", new RemindCommand())
+            entry("remind", new RemindCommand()),
+            entry("uwuify", new UwuifyCommand())
     );
 
     public static boolean commandExists(String command) {

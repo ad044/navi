@@ -7,7 +7,7 @@ import net.dv8tion.jda.api.entities.TextChannel;
 public class AdifyCommand implements Command {
     @Override
     public String getDescription() {
-        return "Adifies the string.";
+        return "Adifies the input.";
     }
 
     @Override
