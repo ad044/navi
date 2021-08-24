@@ -19,6 +19,11 @@ public class ColorCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "general";
+    }
+
+    @Override
     public final boolean isAdminCommand() {
         return false;
     }

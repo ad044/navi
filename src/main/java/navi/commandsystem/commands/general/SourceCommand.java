@@ -1,18 +1,17 @@
-package navi.commandsystem.commands.audioplayer;
+package navi.commandsystem.commands.general;
 
-import navi.Navi;
 import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
 
-public final class SkipCommand implements Command {
+public class SourceCommand implements Command {
     @Override
     public String getDescription() {
-        return "Skips a track.";
+        return "Sends the source repo for the project.";
     }
 
     @Override
     public String getCategory() {
-        return "player";
+        return "general";
     }
 
     @Override
@@ -22,6 +21,6 @@ public final class SkipCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        Navi.audioPlayer.skipTrack(params.getGuild(), params.getTextChannel());
+        params.getTextChannel().sendMessage("https://github.com/ad044/navi").queue();
     }
 }

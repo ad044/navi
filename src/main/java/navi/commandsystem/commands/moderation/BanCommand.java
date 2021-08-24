@@ -1,4 +1,4 @@
-package navi.commandsystem.commands.administration;
+package navi.commandsystem.commands.moderation;
 
 import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
@@ -13,6 +13,11 @@ public final class BanCommand implements Command {
     @Override
     public final String getDescription() {
         return "Bans a member.";
+    }
+
+    @Override
+    public String getCategory() {
+        return "moderation";
     }
 
     @Override

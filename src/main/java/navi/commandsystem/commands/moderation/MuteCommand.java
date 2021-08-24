@@ -1,4 +1,4 @@
-package navi.commandsystem.commands.administration;
+package navi.commandsystem.commands.moderation;
 
 import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
@@ -8,13 +8,17 @@ import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Role;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.util.Arrays;
 import java.util.List;
 
 import static navi.roles.RoleManager.addRoles;
 import static navi.roles.RoleManager.removeRoles;
 
 public final class MuteCommand implements Command {
+    @Override
+    public final String getCategory() {
+        return "moderation";
+    }
+
     @Override
     public final String getDescription() {
         return "Mutes a member.";

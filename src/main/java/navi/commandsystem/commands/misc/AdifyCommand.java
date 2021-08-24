@@ -11,6 +11,11 @@ public class AdifyCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "misc";
+    }
+
+    @Override
     public boolean isAdminCommand() {
         return false;
     }

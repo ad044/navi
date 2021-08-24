@@ -1,16 +1,21 @@
 package navi.commandsystem;
 
-import navi.commandsystem.commands.administration.BanCommand;
-import navi.commandsystem.commands.administration.DeleteCommand;
-import navi.commandsystem.commands.administration.KickCommand;
-import navi.commandsystem.commands.administration.MuteCommand;
+import navi.commandsystem.commands.moderation.BanCommand;
+import navi.commandsystem.commands.moderation.DeleteCommand;
+import navi.commandsystem.commands.moderation.KickCommand;
+import navi.commandsystem.commands.moderation.MuteCommand;
 import navi.commandsystem.commands.audioplayer.*;
 import navi.commandsystem.commands.general.*;
 import navi.commandsystem.commands.misc.AdifyCommand;
 import navi.commandsystem.commands.misc.NeofetchCommand;
 import navi.commandsystem.commands.misc.UwuifyCommand;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 import static java.util.Map.entry;
 
@@ -30,7 +35,8 @@ public final class CommandProvider {
             entry("move", new MoveCommand()),
             entry("adify", new AdifyCommand()),
             entry("remind", new RemindCommand()),
-            entry("uwuify", new UwuifyCommand())
+            entry("uwuify", new UwuifyCommand()),
+            entry("source", new SourceCommand())
     );
 
     public static boolean commandExists(String command) {
@@ -39,6 +45,17 @@ public final class CommandProvider {
 
     public static Command getCommand(String commandName) {
         return commands.get(commandName);
+    }
+
+    public static Map<String, Command> getCommandsByCategory(String category) {
+        return commands.entrySet()
+                .stream()
+                .filter(command -> command.getValue().getCategory().equals(category))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+    }
+
+    public static Set<String> getCategories(){
+        return commands.values().stream().map(Command::getCategory).collect(Collectors.toSet());
     }
 
     public static Map<String, Command> getCommands() {

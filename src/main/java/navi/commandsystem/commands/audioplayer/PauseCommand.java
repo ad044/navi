@@ -11,6 +11,11 @@ public class PauseCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "player";
+    }
+
+    @Override
     public boolean isAdminCommand() {
         return false;
     }

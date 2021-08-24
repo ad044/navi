@@ -1,4 +1,4 @@
-package navi.commandsystem.commands.administration;
+package navi.commandsystem.commands.moderation;
 
 import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
@@ -13,6 +13,11 @@ public final class DeleteCommand implements Command {
     @Override
     public final String getDescription() {
         return "Deletes messages.";
+    }
+
+    @Override
+    public String getCategory() {
+        return "moderation";
     }
 
     @Override

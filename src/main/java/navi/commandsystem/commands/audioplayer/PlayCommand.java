@@ -8,12 +8,16 @@ import net.dv8tion.jda.api.entities.VoiceChannel;
 
 import java.util.Arrays;
 import java.util.Map;
-import java.util.Optional;
 
 public final class PlayCommand implements Command {
     @Override
     public String getDescription() {
         return "Adds a track to the queue.";
+    }
+
+    @Override
+    public String getCategory() {
+        return "player";
     }
 
     @Override

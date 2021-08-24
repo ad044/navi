@@ -13,6 +13,11 @@ public final class NeofetchCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "misc";
+    }
+
+    @Override
     public final boolean isAdminCommand() {
         return false;
     }

@@ -13,6 +13,11 @@ public class RemindCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "general";
+    }
+
+    @Override
     public boolean isAdminCommand() {
         return false;
     }

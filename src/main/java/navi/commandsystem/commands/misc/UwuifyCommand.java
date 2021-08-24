@@ -14,6 +14,11 @@ public class UwuifyCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "misc";
+    }
+
+    @Override
     public boolean isAdminCommand() {
         return false;
     }

@@ -5,20 +5,28 @@ import navi.commandsystem.CommandParameters;
 import navi.commandsystem.CommandProvider;
 import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
-import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
+import net.dv8tion.jda.api.entities.User;
 
-import java.util.Map;
+import java.util.Set;
+
+import static navi.commandsystem.CommandProvider.getCommandsByCategory;
 
 public final class HelpCommand implements Command {
     public final MessageEmbed constructHelpMessage(){
         EmbedBuilder helpMessage = new EmbedBuilder();
-        for (Map.Entry<String, Command> entry : CommandProvider.getCommands().entrySet()) {
-            String name = entry.getKey();
-            Command command = entry.getValue();
-            String description = command.getDescription();
-            boolean isAdminCommand = command.isAdminCommand();
-            helpMessage.addField(name, String.format("%s \nAdmin-only: %s", description, isAdminCommand), false);
-        }
+
+        helpMessage.appendDescription("All commands mentioned below must start with \"navi,\"");
+
+        Set<String> categories = CommandProvider.getCategories();
+        categories.forEach(category -> {
+            helpMessage.addField("", String.format("%s COMMANDS:", category.toUpperCase()), false);
+
+            getCommandsByCategory(category)
+                    .forEach((key, value) -> helpMessage.addField(key, value.getDescription(), false));
+            });
+
+        helpMessage.addBlankField(false);
+        helpMessage.addField("Source code:", "https://github.com/ad044/navi", false);
         return helpMessage.build();
     }
 
@@ -28,13 +36,18 @@ public final class HelpCommand implements Command {
     }
 
     @Override
+    public String getCategory() {
+        return "general";
+    }
+
+    @Override
     public final boolean isAdminCommand() {
         return false;
     }
 
     @Override
     public final void execute(CommandParameters params) {
-        params.getTextChannel().sendMessageEmbeds(constructHelpMessage()).queue();
-//        event.getAuthor().openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructHelpMessage())).queue();
+        User author = params.getAuthor().getUser();
+        author.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructHelpMessage())).queue();
     }
 }

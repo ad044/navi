@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 public final class CommandScheduler {
-    private static final List<String> acceptedUnits = Arrays.asList("M", "H", "S");
+    private static final List<String> acceptedUnits = Arrays.asList("M", "H", "S", "D");
 
     private static boolean isTimeValidFormat(String unit, String duration) {
 
@@ -25,6 +25,7 @@ public final class CommandScheduler {
 
     private static long convertToMillis(String unit, long duration) {
         TimeUnit timeUnit = Map.of(
+                "D", TimeUnit.DAYS,
                 "H", TimeUnit.HOURS,
                 "M", TimeUnit.MINUTES,
                 "S", TimeUnit.SECONDS
