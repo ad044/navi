@@ -14,7 +14,6 @@ import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
 
 public final class AudioPlayer {
     private final AudioPlayerManager playerManager;

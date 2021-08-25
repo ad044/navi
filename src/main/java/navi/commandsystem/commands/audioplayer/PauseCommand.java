@@ -22,6 +22,6 @@ public class PauseCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        Navi.audioPlayer.pauseTrack(params.getGuild(), params.getTextChannel());
+        Navi.getAudioPlayer().pauseTrack(params.getGuild(), params.getTextChannel());
     }
 }

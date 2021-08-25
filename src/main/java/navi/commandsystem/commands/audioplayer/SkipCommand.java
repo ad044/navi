@@ -22,6 +22,6 @@ public final class SkipCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        Navi.audioPlayer.skipTrack(params.getGuild(), params.getTextChannel());
+        Navi.getAudioPlayer().skipTrack(params.getGuild(), params.getTextChannel());
     }
 }

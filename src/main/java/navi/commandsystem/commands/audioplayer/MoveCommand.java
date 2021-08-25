@@ -36,7 +36,7 @@ public class MoveCommand implements Command {
                 return;
             }
 
-            Navi.audioPlayer.movePlayer(guild, voiceChannel);
+            Navi.getAudioPlayer().movePlayer(guild, voiceChannel);
         }
     }
 }

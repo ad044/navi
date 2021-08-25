@@ -24,8 +24,18 @@
             <artifactId>lavaplayer</artifactId>
             <version>1.3.77</version>
         </dependency>
+        <dependency>
+            <groupId>club.minnced</groupId>
+            <artifactId>discord-webhooks</artifactId>
+            <version>0.5.8</version>
+        </dependency>
     </dependencies>
     <repositories>
+        <repository>
+            <name>jcenter</name>
+            <id>bintray-jcenter</id>
+            <url>https://jcenter.bintray.com</url>
+        </repository>
         <repository>
             <id>dv8tion</id>
             <name>m2-dv8tion</name>

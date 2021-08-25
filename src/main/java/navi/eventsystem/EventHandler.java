@@ -2,6 +2,7 @@ package navi.eventsystem;
 
 import navi.Navi;
 import net.dv8tion.jda.api.entities.Member;
+import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
@@ -15,7 +16,7 @@ import static navi.commandsystem.CommandProvider.getCommand;
 
 public final class EventHandler {
     public static void handleMemberRemoveEvent(GuildMemberRemoveEvent event){
-        TextChannel targetChannel = event.getGuild().getTextChannelById(Navi.DEFAULT_CHANNEL);
+        TextChannel targetChannel = event.getGuild().getTextChannelById(Navi.getDefaultChannel());
         Member leftMember = event.getMember();
 
         if (leftMember != null && targetChannel != null) {
@@ -24,7 +25,7 @@ public final class EventHandler {
     }
 
     public static void handleMemberJoinEvent(GuildMemberJoinEvent event){
-        TextChannel targetChannel = event.getGuild().getTextChannelById(Navi.DEFAULT_CHANNEL);
+        TextChannel targetChannel = event.getGuild().getTextChannelById(Navi.getDefaultChannel());
         Member newMember = event.getMember();
 
         if (targetChannel != null) {
@@ -33,19 +34,21 @@ public final class EventHandler {
     }
 
     public static void handleMessageReceivedEvent(GuildMessageReceivedEvent event){
-        String message = event.getMessage().getContentRaw();
+        Message message = event.getMessage();
+        String messageRaw = message.getContentRaw();
 
-
-        for (String word : Navi.filteredWords) {
-            if (message.contains(word)) {
-                event.getMessage().delete().queue();
+        for (String word : Navi.getFilteredWords().keySet()) {
+            if (messageRaw.contains(word)) {
+                message.delete().queue();
+                Navi.getChatFilterWebhook()
+                        .sendFilteredMessageAsUser(event.getGuild(), event.getChannel(), event.getAuthor(), messageRaw);
                 return;
             }
         }
 
         // Check if a command call
-        if (message.startsWith(Navi.prefix)) {
-            String[] cmdSplit = message.trim().replaceAll(" +", " ").split(" ");
+        if (messageRaw.startsWith(Navi.getPrefix())) {
+            String[] cmdSplit = messageRaw.trim().replaceAll(" +", " ").split(" ");
             if (cmdSplit.length > 1) {
                 handleCommandReceivedEvent(event, Arrays.copyOfRange(cmdSplit, 1, cmdSplit.length));
             }

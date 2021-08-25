@@ -79,6 +79,6 @@ public final class PlayCommand implements Command {
             return;
         }
 
-        Navi.audioPlayer.loadAndPlay(params.getTextChannel(), voiceChannel, String.join(" ", query));
+        Navi.getAudioPlayer().loadAndPlay(params.getTextChannel(), voiceChannel, String.join(" ", query));
     }
 }

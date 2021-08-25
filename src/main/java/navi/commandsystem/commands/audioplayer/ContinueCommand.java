@@ -22,6 +22,6 @@ public class ContinueCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        Navi.audioPlayer.continueTrack(params.getGuild(), params.getTextChannel());
+        Navi.getAudioPlayer().continueTrack(params.getGuild(), params.getTextChannel());
     }
 }
