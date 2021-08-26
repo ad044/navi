@@ -22,8 +22,14 @@ public class AdifyCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        String rawContent = params.getMessage().getContentRaw();
         TextChannel channel = params.getTextChannel();
+
+        if (!params.hasArguments()) {
+            channel.sendMessage("Please provide arguments for the command.").queue();
+            return;
+        }
+
+        String rawContent = params.getMessage().getContentRaw();
         String adified = rawContent.substring(rawContent.indexOf("adify") + 5)
                 .replaceAll("[a-zA-Z]+\\.?", "sex");
 

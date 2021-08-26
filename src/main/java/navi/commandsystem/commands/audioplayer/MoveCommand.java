@@ -29,14 +29,22 @@ public class MoveCommand implements Command {
         TextChannel channel = params.getTextChannel();
         Guild guild = params.getGuild();
 
-        if (args[0].equalsIgnoreCase("here")) {
-            VoiceChannel voiceChannel = params.getAuthor().getVoiceState().getChannel();
-            if (voiceChannel == null) {
-                channel.sendMessage("You are not in a voice channel.").queue();
-                return;
-            }
-
-            Navi.getAudioPlayer().movePlayer(guild, voiceChannel);
+        if (!params.hasArguments()) {
+            channel.sendMessage("Insufficient arguments. Please type \"navi, move here\" when in a vc.").queue();
+            return;
         }
+
+        if (!args[0].equalsIgnoreCase("here")) {
+            channel.sendMessage("Incorrect destination, please replace with \"navi, move here\"").queue();
+            return;
+        }
+
+        VoiceChannel voiceChannel = params.getAuthor().getVoiceState().getChannel();
+        if (voiceChannel == null) {
+            channel.sendMessage("You are not in a voice channel.").queue();
+            return;
+        }
+
+        Navi.getAudioPlayer().movePlayer(guild, voiceChannel);
     }
 }

@@ -67,7 +67,7 @@ public final class PlayCommand implements Command {
         TextChannel channel = params.getTextChannel();
         VoiceChannel voiceChannel = params.getAuthor().getVoiceState().getChannel();
 
-        if (args.length == 0) {
+        if (!params.hasArguments()) {
             channel.sendMessage("Insufficient arguments.").queue();
             return;
         }

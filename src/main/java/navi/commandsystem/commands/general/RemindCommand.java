@@ -29,13 +29,15 @@ public class RemindCommand implements Command {
         User author = params.getMessage().getAuthor();
         TextChannel channel = params.getTextChannel();
 
-        if (args.length > 0) {
-            String scheduleData = args[0];
-            String toSend = rawContent.substring(rawContent.indexOf(scheduleData) + scheduleData.length());
-            Runnable scheduledCmd = () -> author.openPrivateChannel()
-                    .flatMap(privateChannel -> privateChannel.sendMessage(toSend)).queue();
-            CommandScheduler.scheduleCommand(scheduledCmd, scheduleData, channel);
+        if (args.length < 2) {
+            channel.sendMessage("Insufficient arguments.").queue();
+            return;
         }
 
+        String scheduleData = args[0];
+        String toSend = rawContent.substring(rawContent.indexOf(scheduleData) + scheduleData.length());
+        Runnable scheduledCmd = () -> author.openPrivateChannel()
+                .flatMap(privateChannel -> privateChannel.sendMessage(toSend)).queue();
+        CommandScheduler.scheduleCommand(scheduledCmd, scheduleData, channel);
     }
 }

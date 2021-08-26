@@ -34,12 +34,15 @@ public final class MuteCommand implements Command {
         Guild guild = params.getGuild();
         TextChannel channel = params.getTextChannel();
         List<Member> mentions = params.getMentions();
+        boolean hasMentions = params.hasMentions();
+
+        if (!hasMentions) {
+            channel.sendMessage("Please provide a user (or users) to mute.").queue();
+            return;
+        }
+
         String[] args = params.getArgs();
         Role mutedRole = guild.getRolesByName("+muted", true).get(0);
-
-        if (mentions.size() == 0) {
-            channel.sendMessage("Please provide a user (or users) to mute.").queue();
-        }
 
         try {
             addRoles(mentions, mutedRole, guild);

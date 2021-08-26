@@ -25,8 +25,14 @@ public class UwuifyCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        String rawContent = params.getMessage().getContentRaw();
         TextChannel channel = params.getTextChannel();
+
+        if (!params.hasArguments()) {
+            channel.sendMessage("Please provide arguments for the command.").queue();
+            return;
+        }
+
+        String rawContent = params.getMessage().getContentRaw();
 
         String toTransform = rawContent.substring(rawContent.indexOf("uwuify") + 6);
 

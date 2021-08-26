@@ -31,9 +31,11 @@ public final class BanCommand implements Command {
         String[] args = params.getArgs();
         TextChannel channel = params.getTextChannel();
         List<Member> mentions = params.getMentions();
+        boolean hasMentions = params.hasMentions();
 
-        if (mentions.size() == 0) {
+        if (!hasMentions) {
             channel.sendMessage("Please provide a user (or users) to ban.").queue();
+            return;
         }
 
         mentions.forEach(member -> member.ban(10).queue());

@@ -36,7 +36,7 @@ public class ColorCommand implements Command {
         List<Member> mentions = params.getMentions();
         String[] args = params.getArgs();
 
-        if (args.length == 0) {
+        if (!params.hasArguments()) {
             channel.sendMessage("Please provide an input for the color.").queue();
             return;
         }

@@ -64,8 +64,9 @@ public final class DeleteCommand implements Command {
         boolean hasMentions = params.hasMentions();
         String[] args = params.getArgs();
 
-        if (args.length == 0) {
+        if (!params.hasArguments()) {
             channel.sendMessage("Please provide arguments for the command.").queue();
+            return;
         }
 
         try {
