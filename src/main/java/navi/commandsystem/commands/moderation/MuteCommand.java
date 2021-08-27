@@ -26,7 +26,7 @@ public final class MuteCommand implements Command {
 
     @Override
     public final boolean isAdminCommand() {
-        return false;
+        return true;
     }
 
     @Override

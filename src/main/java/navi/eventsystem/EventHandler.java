@@ -1,6 +1,8 @@
 package navi.eventsystem;
 
 import navi.Navi;
+import navi.commandsystem.Command;
+import net.dv8tion.jda.api.Permission;
 import net.dv8tion.jda.api.entities.Member;
 import net.dv8tion.jda.api.entities.Message;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -9,6 +11,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
 import java.util.Arrays;
+import java.util.Locale;
 
 import static navi.commandsystem.CommandParser.parseCommand;
 import static navi.commandsystem.CommandProvider.commandExists;
@@ -47,7 +50,7 @@ public final class EventHandler {
         }
 
         // Check if a command call
-        if (messageRaw.startsWith(Navi.getPrefix())) {
+        if (messageRaw.toLowerCase().startsWith(Navi.getPrefix())) {
             String[] cmdSplit = messageRaw.trim().replaceAll(" +", " ").split(" ");
             if (cmdSplit.length > 1) {
                 handleCommandReceivedEvent(event, Arrays.copyOfRange(cmdSplit, 1, cmdSplit.length));
@@ -61,7 +64,6 @@ public final class EventHandler {
         String commandName = commandMsg[0];
 
         if (author == null) {
-            channel.sendMessage("No member found.").queue();
             return;
         }
 
@@ -70,6 +72,11 @@ public final class EventHandler {
             return;
         }
 
-        getCommand(commandName).execute(parseCommand(event, commandMsg));
+        Command command = getCommand(commandName);
+        if  (command.isAdminCommand() && !author.hasPermission(Permission.ADMINISTRATOR)) {
+            channel.sendMessage("Insufficient permissions.").queue();
+        } else {
+            command.execute(parseCommand(event, commandMsg));
+        }
     }
 }

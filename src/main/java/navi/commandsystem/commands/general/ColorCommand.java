@@ -41,7 +41,7 @@ public class ColorCommand implements Command {
             return;
         }
 
-        String color = args[1];
+        String color = args[0];
         List<Role> colorRoles = guild.getRoles().stream().filter(role -> role.getName()
                 .startsWith("-")).collect(Collectors.toList());
         Optional<Role> targetRole = colorRoles.stream().filter(role -> role.getName().equals("-" + color)).findFirst();
