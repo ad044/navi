@@ -7,6 +7,7 @@ import net.dv8tion.jda.api.entities.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 import static navi.roles.RoleManager.addRoles;
@@ -36,14 +37,17 @@ public class ColorCommand implements Command {
         List<Member> mentions = params.getMentions();
         String[] args = params.getArgs();
 
+        List<Role> colorRoles = guild.getRoles().stream().filter(role -> role.getName()
+                .startsWith("-")).collect(Collectors.toList());
+
         if (!params.hasArguments()) {
-            channel.sendMessage("Please provide an input for the color.").queue();
+            StringJoiner joiner = new StringJoiner("` `");
+            colorRoles.forEach(color -> joiner.add(color.getName().substring(1)));
+            channel.sendMessage(String.format("You must provide a color. \nAvailable colors: `%s`", joiner)).queue();
             return;
         }
 
         String color = args[0];
-        List<Role> colorRoles = guild.getRoles().stream().filter(role -> role.getName()
-                .startsWith("-")).collect(Collectors.toList());
         Optional<Role> targetRole = colorRoles.stream().filter(role -> role.getName().equals("-" + color)).findFirst();
 
         if (targetRole.isPresent()){
