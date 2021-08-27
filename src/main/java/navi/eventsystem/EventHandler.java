@@ -50,10 +50,13 @@ public final class EventHandler {
         }
 
         // Check if a command call
-        if (messageRaw.toLowerCase().startsWith(Navi.getPrefix())) {
-            String[] cmdSplit = messageRaw.trim().replaceAll(" +", " ").split(" ");
-            if (cmdSplit.length > 1) {
-                handleCommandReceivedEvent(event, Arrays.copyOfRange(cmdSplit, 1, cmdSplit.length));
+        for (String prefix : Navi.getPrefixes()) {
+            if (messageRaw.toLowerCase().startsWith(prefix)) {
+                String[] cmdSplit = messageRaw.trim().replaceAll(" +", " ").split(" ");
+                if (cmdSplit.length > 1) {
+                    handleCommandReceivedEvent(event, Arrays.copyOfRange(cmdSplit, 1, cmdSplit.length));
+                    break;
+                }
             }
         }
     }

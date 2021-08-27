@@ -15,7 +15,7 @@ public final class HelpCommand implements Command {
     public final MessageEmbed constructHelpMessage(){
         EmbedBuilder helpMessage = new EmbedBuilder();
 
-        helpMessage.appendDescription("All commands mentioned below must start with \"navi,\"");
+        helpMessage.appendDescription("All commands mentioned below must start with \"navi,\" or \"!n\"");
 
         Set<String> categories = CommandProvider.getCategories();
         categories.forEach(category -> {

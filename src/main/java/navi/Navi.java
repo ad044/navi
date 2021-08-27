@@ -22,7 +22,7 @@ public class Navi extends ListenerAdapter {
     private static ChatFilterWebhook chatFilterWebhook;
     private static RuntimeMXBean mxBean;
 
-    private static final String prefix = "navi,";
+    private static final String[] prefixes = new String[] {"navi,", "!n"};
 
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TOKEN = dotenv.get("TOKEN");
@@ -60,8 +60,8 @@ public class Navi extends ListenerAdapter {
         return filteredWords;
     }
 
-    public static String getPrefix() {
-        return prefix;
+    public static String[] getPrefixes() {
+        return prefixes;
     }
 
     public static AudioPlayer getAudioPlayer() {
