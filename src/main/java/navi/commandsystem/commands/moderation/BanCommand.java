@@ -38,7 +38,7 @@ public final class BanCommand implements Command {
             return;
         }
 
-        mentions.forEach(member -> member.ban(10).queue());
+        mentions.forEach(member -> member.ban(7).queue());
 
         // If time was passed (after which to unban the member(s))
         if (args.length > 0) {

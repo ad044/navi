@@ -29,9 +29,19 @@ public class AdifyCommand implements Command {
             return;
         }
 
+        if (params .getMessage().mentionsEveryone()){
+            channel.sendMessage("Malformed input.").queue();
+            return;
+        }
+
         String rawContent = params.getMessage().getContentRaw();
         String adified = rawContent.substring(rawContent.indexOf("adify") + 5)
                 .replaceAll("[a-zA-Z]+\\.?", "sex");
+
+        if (adified.length() > 2000) {
+            channel.sendMessage("Text too long.").queue();
+            return;
+        }
 
         channel.sendMessage(adified).queue();
     }

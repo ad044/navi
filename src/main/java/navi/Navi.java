@@ -13,6 +13,7 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import javax.security.auth.login.LoginException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
+import java.nio.channels.Channel;
 import java.util.Map;
 
 import static java.util.Map.entry;
@@ -27,6 +28,13 @@ public class Navi extends ListenerAdapter {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TOKEN = dotenv.get("TOKEN");
     private static final String DEFAULT_CHANNEL = dotenv.get("DEFAULT_CHANNEL");
+    private static final String VOICE_CHANNEL = dotenv.get("VOICE_CHANNEL");
+    private static final String SHITPOST_CHANNEL = dotenv.get("SHITPOST_CHANNEL");
+
+    private static final Map<String, String> channelMap = Map.ofEntries(
+            entry("player", VOICE_CHANNEL),
+            entry("misc", SHITPOST_CHANNEL)
+    );
 
     private static final Map<String, String> filteredWords = Map.ofEntries();
 
@@ -66,6 +74,10 @@ public class Navi extends ListenerAdapter {
 
     public static AudioPlayer getAudioPlayer() {
         return audioPlayer;
+    }
+
+    public static String getChannelForCategory(String category) {
+        return channelMap.get(category);
     }
 
 }

@@ -10,6 +10,7 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
+import java.nio.channels.Channel;
 import java.util.Arrays;
 import java.util.Locale;
 
@@ -65,10 +66,27 @@ public final class EventHandler {
         }
     }
 
+    private static boolean commandAllowed(Command command, TextChannel channel, Member author) {
+        if (command.isAdminCommand() && !author.hasPermission(Permission.ADMINISTRATOR)) {
+            return false;
+        }
+
+        if (channel.getId().equals(Navi.getChannelForCategory("player"))
+                && command.getCategory().equals("player")
+                && !author.getVoiceState().inVoiceChannel()){
+            channel.sendMessage("Must be in vc to use player commands.").queue();
+            return false;
+        }
+
+        return (command.isAdminCommand()
+                || command.getCategory().equals("general")
+                || channel.getId().equals(Navi.getChannelForCategory(command.getCategory())));
+    }
+
     public static void handleCommandReceivedEvent(GuildMessageReceivedEvent event, String[] commandMsg) {
         TextChannel channel = event.getChannel();
         Member author = event.getMember();
-        String commandName = commandMsg[0];
+        String commandName = commandMsg[0].toLowerCase();
 
         if (author == null) {
             return;
@@ -80,9 +98,7 @@ public final class EventHandler {
         }
 
         Command command = getCommand(commandName);
-        if  (command.isAdminCommand() && !author.hasPermission(Permission.ADMINISTRATOR)) {
-            channel.sendMessage("Insufficient permissions.").queue();
-        } else {
+        if (commandAllowed(command, channel, author)) {
             command.execute(parseCommand(event, commandMsg));
         }
     }

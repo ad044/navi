@@ -33,8 +33,7 @@ public final class CommandProvider {
             entry("adify", new AdifyCommand()),
             entry("remind", new RemindCommand()),
             entry("uwuify", new UwuifyCommand()),
-            entry("source", new SourceCommand()),
-            entry("delaymsg", new DelayMsgCommand())
+            entry("source", new SourceCommand())
     );
 
     public static boolean commandExists(String command) {

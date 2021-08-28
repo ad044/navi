@@ -72,6 +72,11 @@ public final class DeleteCommand implements Command {
         try {
             int count = Integer.parseInt(args[0]);
 
+            if (count > 1000) {
+                channel.sendMessage("Please input a number lower than 1000.").queue();
+                return ;
+            }
+
             if (count < 1) {
                 channel.sendMessage("X?D?D?").queue();
                 return;

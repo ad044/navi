@@ -66,10 +66,20 @@ public class UwuifyCommand implements Command {
             return;
         }
 
-        String rawContent = params.getMessage().getContentRaw();
+        if (params .getMessage().mentionsEveryone()){
+            channel.sendMessage("Malformed input.").queue();
+            return;
+        }
 
-        String toTransform = rawContent.substring(rawContent.indexOf("uwuify") + 6);
+        String rawContent = String.join(" ", params.getArgs());
 
-        channel.sendMessage(uwuifyStr(toTransform)).queue();
+        String uwuified = uwuifyStr(rawContent);
+
+        if (uwuified.length() > 2000) {
+            channel.sendMessage("Text too long.").queue();
+            return;
+        }
+
+        channel.sendMessage(uwuifyStr(rawContent)).queue();
     }
 }
