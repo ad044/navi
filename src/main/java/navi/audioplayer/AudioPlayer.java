@@ -7,12 +7,14 @@ import com.sedmelluq.discord.lavaplayer.source.AudioSourceManagers;
 import com.sedmelluq.discord.lavaplayer.tools.FriendlyException;
 import com.sedmelluq.discord.lavaplayer.track.AudioPlaylist;
 import com.sedmelluq.discord.lavaplayer.track.AudioTrack;
+import com.sedmelluq.discord.lavaplayer.track.AudioTrackInfo;
 import net.dv8tion.jda.api.entities.Guild;
 import net.dv8tion.jda.api.entities.TextChannel;
 import net.dv8tion.jda.api.entities.VoiceChannel;
 import net.dv8tion.jda.api.managers.AudioManager;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public final class AudioPlayer {
@@ -91,6 +93,57 @@ public final class AudioPlayer {
         }
 
         musicManager.scheduler.queue(track);
+    }
+
+    public void getQueue(Guild guild, TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+
+        StringBuilder sb = new StringBuilder();
+
+        AudioTrack playingTrack =  musicManager.player.getPlayingTrack();
+
+        if (playingTrack != null) {
+            sb.append(String.format("Currently playing: `%s`\n", playingTrack.getInfo().title));
+        }
+
+        List<AudioTrack> currentPlaylist =  musicManager.scheduler.getCurrentPlaylistQueue();
+        if (currentPlaylist.size() > 0) {
+            sb.append("Next up:\n");
+            int index = 1;
+            for (AudioTrack track : currentPlaylist) {
+                sb.append(String.format("%s - `%s`\n", (index++), track.getInfo().title));
+            }
+        }
+
+        if (sb.length() == 0) {
+            channel.sendMessage("Playlist is empty.").queue();
+            return;
+        }
+
+        channel.sendMessage(sb).queue();
+    }
+
+    public void clearQueue(Guild guild, TextChannel channel) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+
+        musicManager.scheduler.resetCurrentPlaylistQueue();
+
+        channel.sendMessage("Cleared the queue.").queue();
+    }
+
+    public void getCurrentTrack(Guild guild, TextChannel channel){
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+
+        AudioTrack playingTrack =  musicManager.player.getPlayingTrack();
+
+        if (playingTrack == null) {
+            channel.sendMessage("No currently playing track found.").queue();
+            return;
+        }
+
+        AudioTrackInfo trackData = playingTrack.getInfo();
+
+        channel.sendMessage(String.format("Currently playing: `%s`\nURL: %s", trackData.title, trackData.uri)).queue();
     }
 
     public void skipTrack(Guild guild, TextChannel channel) {

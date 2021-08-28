@@ -21,6 +21,7 @@ public final class CommandProvider {
             entry("help", new HelpCommand()),
             entry("neofetch", new NeofetchCommand()),
             entry("color", new ColorCommand()),
+            entry("colour", new ColorCommand()),
             entry("delete", new DeleteCommand()),
             entry("ban", new BanCommand()),
             entry("kick", new KickCommand()),
@@ -33,7 +34,10 @@ public final class CommandProvider {
             entry("adify", new AdifyCommand()),
             entry("remind", new RemindCommand()),
             entry("uwuify", new UwuifyCommand()),
-            entry("source", new SourceCommand())
+            entry("source", new SourceCommand()),
+            entry("currenttrack", new CurrentTrackCommand()),
+            entry("showq", new ShowQueueCommand()),
+            entry("clearq", new ClearQueueCommand())
     );
 
     public static boolean commandExists(String command) {
