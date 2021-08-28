@@ -10,9 +10,6 @@ import navi.commandsystem.commands.misc.AdifyCommand;
 import navi.commandsystem.commands.misc.NeofetchCommand;
 import navi.commandsystem.commands.misc.UwuifyCommand;
 
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;

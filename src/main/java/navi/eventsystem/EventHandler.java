@@ -37,6 +37,10 @@ public final class EventHandler {
     }
 
     public static void handleMessageReceivedEvent(GuildMessageReceivedEvent event){
+        if (event.getAuthor().isBot() || event.getAuthor().isSystem()) {
+            return;
+        }
+
         Message message = event.getMessage();
         String messageRaw = message.getContentRaw();
 

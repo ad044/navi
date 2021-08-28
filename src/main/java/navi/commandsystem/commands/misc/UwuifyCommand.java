@@ -4,8 +4,11 @@ import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
 import net.dv8tion.jda.api.entities.TextChannel;
 
+import javax.swing.plaf.IconUIResource;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.*;
+import java.util.regex.Pattern;
 
 public class UwuifyCommand implements Command {
     @Override
@@ -23,6 +26,37 @@ public class UwuifyCommand implements Command {
         return false;
     }
 
+    private final Map<Character, String> uwuMap = Map.of(
+            'r', "w",
+            'l', "w",
+            'R', "W",
+            'L', "W",
+            'u', "yu",
+            'U', "yU"
+    );
+
+    private final String[] uwuSmileys = new String[] {
+        "(ᵘʷᵘ)", "(ᵘﻌᵘ)", "(◡ ω ◡)", "(◡ ꒳ ◡)", "(◡ w ◡)", "(◡ ሠ ◡)", "(˘ω˘)", "(⑅˘꒳˘)", "(˘ᵕ˘)", "(˘ሠ˘)", "(˘³˘)",
+        "(˘ε˘)", "(˘˘˘)", "( ᴜ ω ᴜ )", "(„ᵕᴗᵕ„)", "(ㅅꈍ ˘ ꈍ)", "(⑅˘꒳˘)", "( ｡ᵘ ᵕ ᵘ ｡)", "( ᵘ ꒳ ᵘ ✼)", "( ˘ᴗ˘ )", "(ᵕᴗ ᵕ⁎)",
+        "*:･ﾟ✧(ꈍᴗꈍ)✧･ﾟ:*", "*˚*(ꈍ ω ꈍ).₊̣̇.", "(。U ω U。)", "(U ᵕ U❁)", "(U ﹏ U)", "(◦ᵕ ˘ ᵕ◦)", "ღ(U꒳Uღ)", "♥(。U ω U。)",
+        "– ̗̀ (ᵕ꒳ᵕ) ̖́-", "( ͡U ω ͡U )", "( ͡o ᵕ ͡o )", "( ͡o ꒳ ͡o )", "( ˊ.ᴗˋ )", "(ᴜ‿ᴜ✿)", "~(˘▾˘~)", "(｡ᴜ‿‿ᴜ｡)", "uwu", "owo"
+    };
+
+    private final List<String> smileyTriggers = Arrays.asList("?", ";", ".", "!");
+
+    private String uwuifyStr(String input) {
+        StringBuilder sb = new StringBuilder();
+
+        for (char currChar : input.toCharArray()) {
+            String strCurrChar = Character.toString(currChar);
+            sb.append(uwuMap.getOrDefault(currChar, strCurrChar));
+            if (smileyTriggers.contains(strCurrChar)) {
+                sb.append(" ").append(uwuSmileys[new Random().nextInt(uwuSmileys.length)]);
+            }
+        }
+        return sb.toString();
+    }
+
     @Override
     public void execute(CommandParameters params) {
         TextChannel channel = params.getTextChannel();
@@ -36,26 +70,6 @@ public class UwuifyCommand implements Command {
 
         String toTransform = rawContent.substring(rawContent.indexOf("uwuify") + 6);
 
-        String[] cmd = new String[] {"/bin/bash", "-c", "uwuify <<EOF\n" + toTransform + "\nEOF"};
-
-        StringBuilder uwuified = new StringBuilder();
-
-        Process p;
-        try {
-            p = Runtime.getRuntime().exec(cmd);
-            p.waitFor();
-            BufferedReader reader =
-                    new BufferedReader(new InputStreamReader(p.getInputStream()));
-
-            String line;
-            while ((line = reader.readLine())!= null) {
-                uwuified.append(line).append("\n");
-            }
-        } catch (Exception e) {
-            channel.sendMessage("Failed to uwuify.").queue();
-            e.printStackTrace();
-        }
-
-        channel.sendMessage(uwuified).queue();
+        channel.sendMessage(uwuifyStr(toTransform)).queue();
     }
 }
