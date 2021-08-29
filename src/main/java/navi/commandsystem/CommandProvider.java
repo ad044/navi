@@ -38,7 +38,9 @@ public final class CommandProvider {
             entry("clearq", new ClearQueueCommand()),
             entry("hello", new HelloCommand()),
             entry("unmute", new UnmuteCommand()),
-            entry("seek", new SeekCommand())
+            entry("seek", new SeekCommand()),
+            entry("rm", new RemoveCommand()),
+            entry("rmrange", new RemoveRangeCommand())
     );
 
     public static boolean commandExists(String command) {

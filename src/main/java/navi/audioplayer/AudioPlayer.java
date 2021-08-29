@@ -210,6 +210,60 @@ public final class AudioPlayer {
         }
     }
 
+    public void removeAtIndex(Guild guild, TextChannel channel, int targetIndex) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+
+        List<AudioTrack> currentPlaylist =  musicManager.scheduler.getCurrentPlaylistQueue();
+        int playlistSize = currentPlaylist.size();
+
+        if (targetIndex == 0) {
+            skipTrack(guild, channel);
+            return;
+        }
+
+        if (playlistSize < targetIndex) {
+            channel.sendMessage("Specified index is larger than the playlist.").queue();
+            return;
+        }
+
+        if (playlistSize > 0){
+            int index = 1;
+            for (AudioTrack track : currentPlaylist) {
+                if (index == targetIndex) {
+                    musicManager.scheduler.removeTrackFromQueue(track);
+                    channel.sendMessage(String.format("Removed `%s` from the queue.", track.getInfo().title)).queue();
+                }
+                index++;
+            }
+        } else {
+            channel.sendMessage("Playlist is empty.").queue();
+        }
+    }
+
+    public void removeInRange(Guild guild, TextChannel channel, int lowerBound, int upperBound) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+
+        List<AudioTrack> currentPlaylist =  musicManager.scheduler.getCurrentPlaylistQueue();
+        int playlistSize = currentPlaylist.size();
+
+        if (lowerBound == 0) {
+            skipTrack(guild, channel);
+        }
+
+        if (playlistSize > 0){
+            int index = 1;
+            for (AudioTrack track : currentPlaylist) {
+                if (index >= lowerBound && index <= upperBound) {
+                    musicManager.scheduler.removeTrackFromQueue(track);
+                    channel.sendMessage(String.format("Removed `%s` from the queue.", track.getInfo().title)).queue();
+                }
+                index++;
+            }
+        } else {
+            channel.sendMessage("Playlist is empty.").queue();
+        }
+    }
+
     public void movePlayer(Guild guild, VoiceChannel voiceChannel){
         AudioManager audioManager = guild.getAudioManager();
         audioManager.openAudioConnection(voiceChannel);
