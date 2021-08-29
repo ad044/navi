@@ -28,13 +28,8 @@ public class Navi extends ListenerAdapter {
     private static final Dotenv dotenv = Dotenv.load();
     private static final String TOKEN = dotenv.get("TOKEN");
     private static final String DEFAULT_CHANNEL = dotenv.get("DEFAULT_CHANNEL");
-    private static final String VOICE_CHANNEL = dotenv.get("VOICE_CHANNEL");
-    private static final String SHITPOST_CHANNEL = dotenv.get("SHITPOST_CHANNEL");
+    private static final String SPAM_CHANNEL = dotenv.get("SPAM_CHANNEL");
 
-    private static final Map<String, String> channelMap = Map.ofEntries(
-            entry("player", VOICE_CHANNEL),
-            entry("misc", SHITPOST_CHANNEL)
-    );
 
     private static final Map<String, String> filteredWords = Map.ofEntries();
 
@@ -76,8 +71,8 @@ public class Navi extends ListenerAdapter {
         return audioPlayer;
     }
 
-    public static String getChannelForCategory(String category) {
-        return channelMap.get(category);
+    public static String getSpamChannel() {
+        return SPAM_CHANNEL;
     }
 
 }

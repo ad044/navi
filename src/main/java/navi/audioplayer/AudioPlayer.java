@@ -17,6 +17,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static navi.time.TimeParser.millisToMS;
+
 public final class AudioPlayer {
     private final AudioPlayerManager playerManager;
     private final Map<Long, GuildMusicManager> musicManagers;
@@ -142,24 +144,70 @@ public final class AudioPlayer {
         }
 
         AudioTrackInfo trackData = playingTrack.getInfo();
+        float percentage = (100f / playingTrack.getDuration() * playingTrack.getPosition());
+        long duration = playingTrack.getDuration();
+        long currentTime = playingTrack.getPosition();
 
-        channel.sendMessage(String.format("Currently playing: `%s`\nURL: %s", trackData.title, trackData.uri)).queue();
+
+        String bar = String.format("`[%s%s]` %s%%.",
+                new String(new char[(int) Math.round((double) percentage / 10)]).replace("", "#"),
+                new String(new char[10 - (int) Math.round((double) percentage / 10)]).replace("", " "),
+                (int) Math.floor(percentage)
+               );
+
+        channel.sendMessage(String.format("Currently playing: `%s`\nURL: %s\nProgress: %s\nDuration: %s\nCurrent time: %s",
+                trackData.title,
+                trackData.uri,
+                bar,
+                millisToMS(duration),
+                millisToMS(currentTime)))
+                .queue();
     }
 
     public void skipTrack(Guild guild, TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(guild);
-        musicManager.scheduler.nextTrack();
 
-        channel.sendMessage("Skipped to next track.").queue();
+        AudioTrack playingTrack =  musicManager.player.getPlayingTrack();
+
+        if (playingTrack == null) {
+            channel.sendMessage("No currently playing track found.").queue();
+            return;
+        }
+
+        channel.sendMessage(String.format("Skipped `%s`.", playingTrack.getInfo().title)).queue();
+        musicManager.scheduler.nextTrack();
     }
 
     public void pauseTrack(Guild guild, TextChannel channel) {
         GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         if (!musicManager.player.isPaused()) {
             musicManager.player.setPaused(true);
+            channel.sendMessage("Paused the player.").queue();
+        } else {
+            channel.sendMessage("Player is already paused.").queue();
+        }
+    }
+
+    public void seek(Guild guild, TextChannel channel, long time) {
+        GuildMusicManager musicManager = getGuildAudioPlayer(guild);
+
+        AudioTrack playingTrack = musicManager.player.getPlayingTrack();
+
+        if (playingTrack == null) {
+            channel.sendMessage("No currently playing track found.").queue();
+            return;
         }
 
-        channel.sendMessage("Paused the player.").queue();
+        long duration = playingTrack.getDuration();
+
+        if (duration < time) {
+            channel.sendMessage(String.format("Passed time (%s) is longer than the track itself (%s).",
+                    millisToMS(time),
+                    millisToMS(duration))).queue();
+        } else {
+            playingTrack.setPosition(time);
+            channel.sendMessage(String.format("Set current time to %s", millisToMS(time))).queue();
+        }
     }
 
     public void movePlayer(Guild guild, VoiceChannel voiceChannel){
@@ -171,9 +219,11 @@ public final class AudioPlayer {
         GuildMusicManager musicManager = getGuildAudioPlayer(guild);
         if (musicManager.player.isPaused()) {
             musicManager.player.setPaused(false);
+            channel.sendMessage("Continued the player.").queue();
+        } else {
+            channel.sendMessage("Player is not paused.").queue();
         }
 
-        channel.sendMessage("Continued the player.").queue();
     }
 
     private void connectToFirstVoiceChannel(AudioManager audioManager) {

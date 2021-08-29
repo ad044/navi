@@ -1,9 +1,7 @@
 package navi.commandsystem;
 
-import navi.commandsystem.commands.moderation.BanCommand;
-import navi.commandsystem.commands.moderation.DeleteCommand;
-import navi.commandsystem.commands.moderation.KickCommand;
-import navi.commandsystem.commands.moderation.MuteCommand;
+import navi.commandsystem.commands.general.HelloCommand;
+import navi.commandsystem.commands.moderation.*;
 import navi.commandsystem.commands.audioplayer.*;
 import navi.commandsystem.commands.general.*;
 import navi.commandsystem.commands.misc.AdifyCommand;
@@ -37,7 +35,10 @@ public final class CommandProvider {
             entry("source", new SourceCommand()),
             entry("currenttrack", new CurrentTrackCommand()),
             entry("showq", new ShowQueueCommand()),
-            entry("clearq", new ClearQueueCommand())
+            entry("clearq", new ClearQueueCommand()),
+            entry("hello", new HelloCommand()),
+            entry("unmute", new UnmuteCommand()),
+            entry("seek", new SeekCommand())
     );
 
     public static boolean commandExists(String command) {
