@@ -10,9 +10,6 @@ import java.util.Optional;
 import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
-import static navi.roles.RoleManager.addRoles;
-import static navi.roles.RoleManager.removeRoles;
-
 public class ColorCommand implements Command {
     @Override
     public final String getDescription() {
@@ -62,14 +59,14 @@ public class ColorCommand implements Command {
             Role targetRoleFinal = targetRole.get();
             if (mentions.size() > 0) {
                 if (author.hasPermission(Permission.ADMINISTRATOR)){
-                    removeRoles(mentions, colorRoles, guild);
-                    addRoles(mentions, targetRoleFinal, guild);
+                    mentions.forEach(member -> colorRoles.forEach(role -> guild.removeRoleFromMember(member, role).queue()));
+                    mentions.forEach(member -> guild.addRoleToMember(member, targetRoleFinal).queue());
                 } else {
                     channel.sendMessage("You do not have permission to change someone's color.").queue();
                 }
             } else {
-                removeRoles(author, colorRoles, guild);
-                addRoles(author, targetRoleFinal, guild);
+                colorRoles.forEach(role -> guild.removeRoleFromMember(author, role).queue());
+                guild.addRoleToMember(author, targetRoleFinal).queue();
             }
         } else {
             channel.sendMessage("Couldn't find a role with this color. Ask an admen to add it.").queue();

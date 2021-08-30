@@ -10,9 +10,6 @@ import net.dv8tion.jda.api.entities.TextChannel;
 
 import java.util.List;
 
-import static navi.roles.RoleManager.addRoles;
-import static navi.roles.RoleManager.removeRoles;
-
 public final class MuteCommand implements Command {
     @Override
     public final String getCategory() {
@@ -54,7 +51,7 @@ public final class MuteCommand implements Command {
         Role mutedRole = guild.getRolesByName("+muted", true).get(0);
 
         try {
-            addRoles(mentions, mutedRole, guild);
+            mentions.forEach(member -> guild.addRoleToMember(member, mutedRole).queue());
         } catch (IllegalAccessError e){
             channel.sendMessage("No muted role found.").queue();
         }
@@ -62,7 +59,7 @@ public final class MuteCommand implements Command {
         // If time was passed as an arg (after which to unmute the member(s))
         if (args.length > 0) {
             String scheduleData = args[0];
-            Runnable scheduledCmd = () -> removeRoles(mentions, mutedRole, guild);
+            Runnable scheduledCmd = () -> mentions.forEach(member -> guild.removeRoleFromMember(member, mutedRole).queue());
             CommandScheduler.scheduleCommand(scheduledCmd, scheduleData, channel);
         }
     }
