@@ -1,5 +1,6 @@
 package navi.commandsystem;
 
+import navi.commandsystem.commands.bot.DieCommand;
 import navi.commandsystem.commands.general.HelloCommand;
 import navi.commandsystem.commands.moderation.*;
 import navi.commandsystem.commands.audioplayer.*;
@@ -40,7 +41,8 @@ public final class CommandProvider {
             entry("unmute", new UnmuteCommand()),
             entry("seek", new SeekCommand()),
             entry("rm", new RemoveCommand()),
-            entry("rmrange", new RemoveRangeCommand())
+            entry("rmrange", new RemoveRangeCommand()),
+            entry("die", new DieCommand())
     );
 
     public static boolean commandExists(String command) {

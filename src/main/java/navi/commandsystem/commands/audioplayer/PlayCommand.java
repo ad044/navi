@@ -43,7 +43,7 @@ public final class PlayCommand implements Command {
     );
 
     private boolean isUrl(String str) {
-        return str.matches("^(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
+        return str.matches("^(https?://)[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]");
     }
 
     private static <T> T[] addToBeginningOfArray(T[] elements, T element)

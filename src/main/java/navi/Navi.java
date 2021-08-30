@@ -13,12 +13,12 @@ import net.dv8tion.jda.api.utils.MemberCachePolicy;
 import javax.security.auth.login.LoginException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.RuntimeMXBean;
-import java.nio.channels.Channel;
 import java.util.Map;
 
 import static java.util.Map.entry;
 
 public class Navi extends ListenerAdapter {
+    public static JDA jda;
     private static AudioPlayer audioPlayer;
     private static ChatFilterWebhook chatFilterWebhook;
     private static RuntimeMXBean mxBean;
@@ -36,7 +36,7 @@ public class Navi extends ListenerAdapter {
     public static void main(String[] args) throws LoginException {
         mxBean = ManagementFactory.getRuntimeMXBean();
 
-        JDA jda = JDABuilder.createDefault(TOKEN)
+        jda = JDABuilder.createDefault(TOKEN)
                 .enableIntents(GatewayIntent.GUILD_MEMBERS)
                 .setMemberCachePolicy(MemberCachePolicy.ALL)
                 .build();
@@ -79,4 +79,7 @@ public class Navi extends ListenerAdapter {
         return VOICE_CHANNEL;
     }
 
+    public static void shutdown() {
+        jda.shutdownNow();
+    }
 }
