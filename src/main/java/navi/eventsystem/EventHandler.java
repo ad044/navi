@@ -71,16 +71,27 @@ public final class EventHandler {
             return false;
         }
 
-        if (channel.getId().equals(Navi.getSpamChannel())
-                && command.getCategory().equals("player")
-                && !author.getVoiceState().inVoiceChannel()){
-            channel.sendMessage("Must be in VC to use player commands.").queue();
-            return false;
+        String commandCategory = command.getCategory();
+        if (commandCategory.equals("player")) {
+            if (!channel.getId().equals(Navi.getVoiceChannel())){
+                return false;
+            }
+
+            if (channel.getId().equals(Navi.getVoiceChannel()) && !author.getVoiceState().inVoiceChannel()) {
+                channel.sendMessage("Must be in VC to use player commands.").queue();
+                return false;
+            }
+
+            return true;
         }
 
-        return (command.isAdminCommand()
-                || command.getCategory().equals("general")
-                || channel.getId().equals(Navi.getSpamChannel()));
+        if (commandCategory.equals("misc")
+             && (channel.getId().equals(Navi.getVoiceChannel())
+                    || channel.getId().equals(Navi.getSpamChannel()))){
+            return true;
+        }
+
+        return (command.isAdminCommand() || command.getCategory().equals("general"));
     }
 
     public static void handleCommandReceivedEvent(GuildMessageReceivedEvent event, String[] commandMsg) {

@@ -29,7 +29,7 @@ public class Navi extends ListenerAdapter {
     private static final String TOKEN = dotenv.get("TOKEN");
     private static final String DEFAULT_CHANNEL = dotenv.get("DEFAULT_CHANNEL");
     private static final String SPAM_CHANNEL = dotenv.get("SPAM_CHANNEL");
-
+    private static final String VOICE_CHANNEL = dotenv.get("VOICE_CHANNEL");
 
     private static final Map<String, String> filteredWords = Map.ofEntries();
 
@@ -73,6 +73,10 @@ public class Navi extends ListenerAdapter {
 
     public static String getSpamChannel() {
         return SPAM_CHANNEL;
+    }
+
+    public static String getVoiceChannel() {
+        return VOICE_CHANNEL;
     }
 
 }
