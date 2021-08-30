@@ -10,9 +10,9 @@ import net.dv8tion.jda.api.events.guild.member.GuildMemberJoinEvent;
 import net.dv8tion.jda.api.events.guild.member.GuildMemberRemoveEvent;
 import net.dv8tion.jda.api.events.message.guild.GuildMessageReceivedEvent;
 
-import java.nio.channels.Channel;
 import java.util.Arrays;
-import java.util.Locale;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static navi.commandsystem.CommandParser.parseCommand;
 import static navi.commandsystem.CommandProvider.commandExists;
@@ -41,6 +41,27 @@ public final class EventHandler {
         if (event.getAuthor().isBot() || event.getAuthor().isSystem()) {
             return;
         }
+
+        List<Message> pastMsgs = event.getChannel().getHistory().retrievePast(3).complete();
+
+        boolean shouldRepeatMessage = true;
+        int currIdx = 0;
+
+        for (Message msg : pastMsgs) {
+            if (msg.getAuthor().isBot()
+                    || (msg.getAuthor().equals(pastMsgs.get(0).getAuthor()) && currIdx != 0)
+                    || !msg.getContentRaw().equals(pastMsgs.get(0).getContentRaw())) {
+                shouldRepeatMessage = false;
+                break;
+            };
+
+            currIdx++;
+        }
+
+        if (shouldRepeatMessage) {
+            event.getChannel().sendMessage(event.getMessage().getContentRaw()).queue();
+        }
+
 
         Message message = event.getMessage();
         String messageRaw = message.getContentRaw();
