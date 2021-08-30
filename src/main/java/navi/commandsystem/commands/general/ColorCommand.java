@@ -20,6 +20,14 @@ public class ColorCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments if called by a regular member. If called by an admenistrator, it can also take mentions\n" +
+                "Examples:\n" +
+                "navi, color pink (gives the caller the pink role)\n" +
+                "navi, color pink @ad (gives ad the pink role, will only work if called by admenistrator)";
+    }
+
+    @Override
     public String getCategory() {
         return "general";
     }

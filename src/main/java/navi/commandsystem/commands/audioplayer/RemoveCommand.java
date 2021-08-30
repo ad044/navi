@@ -12,6 +12,11 @@ public class RemoveCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in index as parameter.\nExample: navi, rm 5 (removes the track located at the index 5)";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

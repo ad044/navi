@@ -10,6 +10,11 @@ public final class KickCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in mentioned members as input:\nExample: navi, kick @ad";
+    }
+
+    @Override
     public String getCategory() {
         return "moderation";
     }

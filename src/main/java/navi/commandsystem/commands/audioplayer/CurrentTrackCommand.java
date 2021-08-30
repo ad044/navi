@@ -11,6 +11,11 @@ public class CurrentTrackCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes no arguments.\nExample: navi, currenttrack";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

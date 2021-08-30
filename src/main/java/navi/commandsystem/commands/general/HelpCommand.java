@@ -9,7 +9,7 @@ import net.dv8tion.jda.api.entities.User;
 
 import java.util.Set;
 
-import static navi.commandsystem.CommandProvider.getCommandsByCategory;
+import static navi.commandsystem.CommandProvider.*;
 
 public final class HelpCommand implements Command {
     public final MessageEmbed constructHelpMessage(){
@@ -36,6 +36,14 @@ public final class HelpCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in (optionally) a command name, and prints the manual for it. If called with no arguments, DMs the full command list.\n" +
+                "Examples:\n" +
+                "navi, help (DMs the caller the command list)\n" +
+                "navi, help mute (prints the manual for the mute command in the channel it was called)";
+    }
+
+    @Override
     public String getCategory() {
         return "general";
     }
@@ -47,7 +55,16 @@ public final class HelpCommand implements Command {
 
     @Override
     public final void execute(CommandParameters params) {
-        User author = params.getAuthor().getUser();
-        author.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructHelpMessage())).queue();
+        if (params.hasArguments()) {
+            String commandName = params.getArgs()[0];
+            if (!commandExists(commandName)) {
+                params.getTextChannel().sendMessage("Command does not exist.").queue();
+                return;
+            }
+            params.getTextChannel().sendMessage(getCommand(commandName).getManual()).queue();
+        } else {
+            User author = params.getAuthor().getUser();
+            author.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructHelpMessage())).queue();
+        }
     }
 }

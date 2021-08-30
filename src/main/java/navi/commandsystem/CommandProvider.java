@@ -28,7 +28,7 @@ public final class CommandProvider {
             entry("skip", new SkipCommand()),
             entry("pause", new PauseCommand()),
             entry("continue", new ContinueCommand()),
-            entry("move", new MoveCommand()),
+            entry("mvhere", new MoveCommand()),
             entry("adify", new AdifyCommand()),
             entry("remind", new RemindCommand()),
             entry("uwuify", new UwuifyCommand()),

@@ -16,6 +16,11 @@ public final class BanCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in mentioned members.\nExample: navi, ban @ad";
+    }
+
+    @Override
     public String getCategory() {
         return "moderation";
     }

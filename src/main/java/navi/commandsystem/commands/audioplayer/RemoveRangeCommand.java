@@ -12,6 +12,11 @@ public class RemoveRangeCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in 2 indices as arguments.\nExample: navi, rmrange 1 5 (removes the tracks ranging from 1 to 5 (inclusive))";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }
@@ -28,7 +33,7 @@ public class RemoveRangeCommand implements Command {
             int lower = Integer.parseInt(params.getArgs()[0]);
             int upper = Integer.parseInt(params.getArgs()[1]);
 
-            if (lower < 0) {
+            if (lower < 0 || lower > upper) {
                 channel.sendMessage("Invalid format.").queue();
                 return;
             }

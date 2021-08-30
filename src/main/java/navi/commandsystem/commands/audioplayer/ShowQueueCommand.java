@@ -11,6 +11,11 @@ public class ShowQueueCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments.\nExample: navi, showq";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

@@ -11,6 +11,11 @@ public class AdifyCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in text as input.\nExample: navi, adify Hello there.";
+    }
+
+    @Override
     public String getCategory() {
         return "misc";
     }

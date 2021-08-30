@@ -16,6 +16,18 @@ public final class PlayCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in (optionally) one of the following as first argument: yt/sc. If provided yt, the rest of the parameters " +
+                "will be counted as a query to search on youtube. If provided sc, the same will happen except it will search on soundcloud." +
+                "If provided a URL, it will attempt to play that track directly." +
+                "If provided a non-URL query, it will default to yt.\nExamples:\n" +
+                "navi, play yt track 44 (looks up track 44 on youtube and plays the first result)\n" +
+                "navi, play sc track 44 (looks up track 44 on soundcloud and plays the first result)\n" +
+                "navi, play <URL> (tries to play the url)\n" +
+                "navi, play track 44 (identical to navi, play yt track 44)";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

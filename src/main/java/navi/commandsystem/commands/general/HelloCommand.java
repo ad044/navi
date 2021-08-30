@@ -10,6 +10,11 @@ public class HelloCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments.\nExample: navi, hello";
+    }
+
+    @Override
     public String getCategory() {
         return "general";
     }

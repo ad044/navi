@@ -13,6 +13,14 @@ public class RemindCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in time as the first argument, the rest is whatever should be sent after that time frame.\n" +
+                "Examples:\n" +
+                "navi, remind 2m4s Buy some milk (reminds you to buy some milk in 2 minutes and 4 seconds)\n" +
+                "navi, remind 3d3h53m20s Drink tea (reminds you to drink tea in 3 days, 3 hours, 53 mins and 20 secs.)" ;
+    }
+
+    @Override
     public String getCategory() {
         return "general";
     }

@@ -14,6 +14,11 @@ public class MoveCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments.\nExample:navi, mvhere";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }
@@ -25,19 +30,8 @@ public class MoveCommand implements Command {
 
     @Override
     public void execute(CommandParameters params) {
-        String[] args = params.getArgs();
         TextChannel channel = params.getTextChannel();
         Guild guild = params.getGuild();
-
-        if (!params.hasArguments()) {
-            channel.sendMessage("Insufficient arguments. Please type \"navi, move here\" when in a vc.").queue();
-            return;
-        }
-
-        if (!args[0].equalsIgnoreCase("here")) {
-            channel.sendMessage("Incorrect destination, please replace with \"navi, move here\"").queue();
-            return;
-        }
 
         VoiceChannel voiceChannel = params.getAuthor().getVoiceState().getChannel();
         if (voiceChannel == null) {

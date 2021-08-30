@@ -4,16 +4,17 @@ import navi.commandsystem.Command;
 import navi.commandsystem.CommandParameters;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import javax.swing.plaf.IconUIResource;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.util.*;
-import java.util.regex.Pattern;
 
 public class UwuifyCommand implements Command {
     @Override
     public String getDescription() {
         return "Uwuifies the input.";
+    }
+
+    @Override
+    public String getManual() {
+        return "Takes in text as input.\nExample: navi, uwuify Hello there.";
     }
 
     @Override
@@ -32,7 +33,7 @@ public class UwuifyCommand implements Command {
             'R', "W",
             'L', "W",
             'u', "yu",
-            'U', "yU"
+            'U', "YU"
     );
 
     private final String[] uwuSmileys = new String[] {

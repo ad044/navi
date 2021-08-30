@@ -25,6 +25,15 @@ public final class MuteCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in time as first input, rest are mentioned members.\n" +
+                "Examples:\n" +
+                "navi, mute 3s @ad (mutes ad for 3 seconds)\n" +
+                "navi, mute 3m2s @ad (mutes ad for 3 minutes and 2 seconds)\n" +
+                "navi, mute @ad (mutes ad indefinitely)";
+    }
+
+    @Override
     public final boolean isAdminCommand() {
         return true;
     }

@@ -10,6 +10,11 @@ public class SourceCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes no arguments.\nExample: navi, source";
+    }
+
+    @Override
     public String getCategory() {
         return "general";
     }

@@ -11,6 +11,11 @@ public class PauseCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments.\nExample: navi, pause";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

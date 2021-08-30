@@ -11,6 +11,11 @@ public final class SkipCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments.\nExample: navi, skip";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

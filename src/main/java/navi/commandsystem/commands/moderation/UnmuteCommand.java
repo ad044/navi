@@ -16,6 +16,11 @@ public class UnmuteCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes mentioned members as input.\nExample: navi, unmute @ad";
+    }
+
+    @Override
     public String getCategory() {
         return "moderation";
     }

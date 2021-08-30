@@ -11,6 +11,11 @@ public class ClearQueueCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in no arguments.\nExample: navi, clearq";
+    }
+
+    @Override
     public String getCategory() {
         return "player";
     }

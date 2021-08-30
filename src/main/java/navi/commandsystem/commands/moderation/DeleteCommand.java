@@ -16,6 +16,14 @@ public final class DeleteCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes in message count and (optionally) mentioned members.\n" +
+                "Examples:\n" +
+                "navi, delete 5 (deletes last 5 messages)\n" +
+                "navi, delete 10 @ad (deletes messages from @ad within a range of 10 last messages)";
+    }
+
+    @Override
     public String getCategory() {
         return "moderation";
     }
@@ -53,7 +61,7 @@ public final class DeleteCommand implements Command {
             }
 
             channel.deleteMessages(messages).queue();
-            deletedCount += messages.size();
+            deletedCount += currSize;
         }
     }
 

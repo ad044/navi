@@ -12,6 +12,11 @@ public final class NeofetchCommand implements Command {
     }
 
     @Override
+    public String getManual() {
+        return "Takes no arguments.\nExample: navi, neofetch";
+    }
+
+    @Override
     public String getCategory() {
         return "misc";
     }

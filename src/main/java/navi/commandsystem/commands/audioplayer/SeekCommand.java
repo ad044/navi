@@ -6,14 +6,17 @@ import navi.commandsystem.CommandParameters;
 import navi.time.TimeParser;
 import net.dv8tion.jda.api.entities.TextChannel;
 
-import java.util.Arrays;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 public class SeekCommand implements Command {
     @Override
     public String getDescription() {
         return "Changes the current track to a specified time.";
+    }
+
+    @Override
+    public String getManual() {
+        return "Takes in time as argument.\nExamples:\n" +
+                "navi, seek 3m2s (puts the time of the current track at 3 minutes and 2 seconds)\n" +
+                "navi, seek 5h2m52s (puts the time of the current track at 5 hours, 2 mins and 52 secs).";
     }
 
     @Override
