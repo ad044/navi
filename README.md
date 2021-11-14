@@ -30,3 +30,10 @@
     - Locally (needs dependacies):
         - `mvn -f pom.xml clean compile assembly:single`
         - `java -jar navi-1.0-jar-with-dependencies.jar`
+
+## Additional Configuration
+### Setting up the muted role
+Make a new role named *+muted* with disabled permissions to send messages.
+### Adding color roles
+Make new roles with the name scheme `-color` for example `-green` with a green color.
+NAVI will autoindex those roles and automatically list them when issuing the help command.
