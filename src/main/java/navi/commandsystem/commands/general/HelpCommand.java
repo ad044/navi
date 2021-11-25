@@ -14,14 +14,6 @@ import java.util.Set;
 import static navi.commandsystem.CommandProvider.*;
 
 public final class HelpCommand implements Command {
-    public final MessageEmbed constructEvilHelpMessage() {
-        EmbedBuilder helpMessage = new EmbedBuilder();
-
-        for (int i=0; i < 50; i++) {
-            helpMessage.addField(Integer.toString(i), "test", false);
-        }
-        return helpMessage.build();
-    }
     public final List<MessageEmbed> constructHelpMessage(){
         List<MessageEmbed> embeds = new ArrayList<>();
         EmbedBuilder helpMessage = new EmbedBuilder();
@@ -42,23 +34,16 @@ public final class HelpCommand implements Command {
         embeds.add(m);
 
         List<MessageEmbed.Field> fields = m.getFields();
-        for (MessageEmbed.Field f : fields) {
-            System.out.println(fields.indexOf(f) + f.getName());
-            System.out.println(f.getValue());
-        }
-
         // Is the limit 25 fields? Yes
-        // How can we limit the number of fields in the embed? Don't, just create a new one. 
-        System.out.println("next 25");
+        // How can we limit the number of fields in the embed? Don't, just create a new one.
         EmbedBuilder nextMessage = new EmbedBuilder();
         m.getFields().stream().skip(25).forEach(f -> nextMessage.addField(f));
         embeds.add(nextMessage.build());
         
-        System.out.println(m.getFields().stream().skip(25).count()); // elements left
-
-        System.out.println(m.getFields().size() + "fields");
+        //System.out.println(m.getFields().stream().skip(25).count()); // elements left
+        //System.out.println(m.getFields().size() + "fields");
         if (m.getFields().size() > 50) {
-            System.out.println("needs more messages");
+            System.out.println("constructHelpMessage uses over 50 fields and needs patching again");
         }
 
         return embeds;
@@ -100,7 +85,6 @@ public final class HelpCommand implements Command {
         } else {
             User author = params.getAuthor().getUser();
             author.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructHelpMessage())).queue();
-            //author.openPrivateChannel().flatMap(channel -> channel.sendMessageEmbeds(constructEvilHelpMessage())).queue();
         }
     }
 }
