@@ -19,6 +19,7 @@ public final class HelpCommand implements Command {
         EmbedBuilder helpMessage = new EmbedBuilder();
 
         helpMessage.appendDescription("All commands mentioned below must start with \"navi,\" or \"!n\"");
+        
         Set<String> categories = CommandProvider.getCategories();
         categories.forEach(category -> {
             helpMessage.addField("", String.format("%s COMMANDS:", category.toUpperCase()), false);
@@ -74,7 +75,6 @@ public final class HelpCommand implements Command {
 
     @Override
     public final void execute(CommandParameters params) {
-        System.out.println("executing help command");
         if (params.hasArguments()) {
             String commandName = params.getArgs()[0];
             if (!commandExists(commandName)) {
