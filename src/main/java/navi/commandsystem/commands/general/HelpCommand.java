@@ -7,16 +7,19 @@ import net.dv8tion.jda.api.EmbedBuilder;
 import net.dv8tion.jda.api.entities.MessageEmbed;
 import net.dv8tion.jda.api.entities.User;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static navi.commandsystem.CommandProvider.*;
 
 public final class HelpCommand implements Command {
-    public final MessageEmbed constructHelpMessage(){
+    public final List<MessageEmbed> constructHelpMessage(){
+        List<MessageEmbed> embeds = new ArrayList<>();
         EmbedBuilder helpMessage = new EmbedBuilder();
 
         helpMessage.appendDescription("All commands mentioned below must start with \"navi,\" or \"!n\"");
-
+        
         Set<String> categories = CommandProvider.getCategories();
         categories.forEach(category -> {
             helpMessage.addField("", String.format("%s COMMANDS:", category.toUpperCase()), false);
@@ -27,7 +30,24 @@ public final class HelpCommand implements Command {
 
         helpMessage.addBlankField(false);
         helpMessage.addField("Source code:", "https://github.com/ad044/navi", false);
-        return helpMessage.build();
+        
+        MessageEmbed m = helpMessage.build();
+        embeds.add(m);
+
+        List<MessageEmbed.Field> fields = m.getFields();
+        // Is the limit 25 fields? Yes
+        // How can we limit the number of fields in the embed? Don't, just create a new one.
+        EmbedBuilder nextMessage = new EmbedBuilder();
+        m.getFields().stream().skip(25).forEach(f -> nextMessage.addField(f));
+        embeds.add(nextMessage.build());
+        
+        //System.out.println(m.getFields().stream().skip(25).count()); // elements left
+        //System.out.println(m.getFields().size() + "fields");
+        if (m.getFields().size() > 50) {
+            System.out.println("constructHelpMessage uses over 50 fields and needs patching again");
+        }
+
+        return embeds;
     }
 
     @Override
