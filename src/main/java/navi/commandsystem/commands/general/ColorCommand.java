@@ -70,8 +70,11 @@ public class ColorCommand implements Command {
                 }
             } else {
                 List<Role> authorRoles = author.getRoles();
+                boolean removeOnly = authorRoles.stream().anyMatch(role -> role.getName().equals(targetRoleFinal.getName()));
                 authorRoles.stream().filter(role -> role.getName().startsWith(COLOR_ROLE_PREFIX)).forEach(role -> guild.removeRoleFromMember(author, role).queue());
-                guild.addRoleToMember(author, targetRoleFinal).queue();
+                if (!removeOnly) {
+                    guild.addRoleToMember(author, targetRoleFinal).queue();
+                }
             }
         } else {
             channel.sendMessage("Couldn't find a role with this color. Ask an admen to add it.").queue();
