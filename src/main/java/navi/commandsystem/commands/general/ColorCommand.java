@@ -11,6 +11,9 @@ import java.util.StringJoiner;
 import java.util.stream.Collectors;
 
 public class ColorCommand implements Command {
+
+    private static final String COLOR_ROLE_PREFIX = "-";
+
     @Override
     public final String getDescription() {
         return "Gives color to a user. If no user is specified, the author will receive it.";
@@ -43,7 +46,7 @@ public class ColorCommand implements Command {
         String[] args = params.getArgs();
 
         List<Role> colorRoles = guild.getRoles().stream().filter(role -> role.getName()
-                .startsWith("-")).collect(Collectors.toList());
+                .startsWith(COLOR_ROLE_PREFIX)).collect(Collectors.toList());
 
         if (!params.hasArguments()) {
             StringJoiner joiner = new StringJoiner("` `");
@@ -53,7 +56,7 @@ public class ColorCommand implements Command {
         }
 
         String color = args[0];
-        Optional<Role> targetRole = colorRoles.stream().filter(role -> role.getName().equals("-" + color)).findFirst();
+        Optional<Role> targetRole = colorRoles.stream().filter(role -> role.getName().equals(COLOR_ROLE_PREFIX + color)).findFirst();
 
         if (targetRole.isPresent()){
             Role targetRoleFinal = targetRole.get();
@@ -65,8 +68,12 @@ public class ColorCommand implements Command {
                     channel.sendMessage("You do not have permission to change someone's color.").queue();
                 }
             } else {
-                colorRoles.forEach(role -> guild.removeRoleFromMember(author, role).queue());
-                guild.addRoleToMember(author, targetRoleFinal).queue();
+                List<Role> authorRoles = author.getRoles();
+                boolean removeOnly = authorRoles.stream().anyMatch(role -> role.getName().equals(targetRoleFinal.getName()));
+                authorRoles.stream().filter(role -> role.getName().startsWith(COLOR_ROLE_PREFIX)).forEach(role -> guild.removeRoleFromMember(author, role).queue());
+                if (!removeOnly) {
+                    guild.addRoleToMember(author, targetRoleFinal).queue();
+                }
             }
         } else {
             channel.sendMessage("Couldn't find a role with this color. Ask an admen to add it.").queue();
