@@ -46,14 +46,16 @@ public final class EventHandler {
 
         boolean shouldRepeatMessage = true;
         int currIdx = 0;
-
+        if (pastMsgs.size() < 3) {
+            shouldRepeatMessage = false;
+        }
         for (Message msg : pastMsgs) {
             if (msg.getAuthor().isBot()
                     || (msg.getAuthor().equals(pastMsgs.get(0).getAuthor()) && currIdx != 0)
                     || !msg.getContentRaw().equals(pastMsgs.get(0).getContentRaw())) {
                 shouldRepeatMessage = false;
                 break;
-            };
+            }
 
             currIdx++;
         }
